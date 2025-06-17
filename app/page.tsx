@@ -28,7 +28,7 @@ export default function LandingPage() {
   const [scrollY, setScrollY] = useState(0)
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY)
@@ -38,75 +38,76 @@ export default function LandingPage() {
 
   useEffect(() => {
     if (isContactModalOpen) {
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = "hidden"
     } else {
-      document.body.style.overflow = 'unset'
+      document.body.style.overflow = "unset"
     }
     return () => {
-      document.body.style.overflow = 'unset'
+      document.body.style.overflow = "unset"
     }
   }, [isContactModalOpen])
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    organizationName: '',
-    organizationType: '',
-    organizationSize: '',
-    message: ''
+    name: "",
+    email: "",
+    organizationName: "",
+    organizationType: "",
+    organizationSize: "",
+    message: "",
   })
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData(prev => ({
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
+
     try {
       // Netlify Forms submission
       const netlifyFormData = new FormData()
-      netlifyFormData.append('form-name', 'contact')
-      netlifyFormData.append('name', formData.name)
-      netlifyFormData.append('email', formData.email)
-      netlifyFormData.append('organizationName', formData.organizationName)
-      netlifyFormData.append('organizationType', formData.organizationType)
-      netlifyFormData.append('organizationSize', formData.organizationSize)
-      netlifyFormData.append('message', formData.message)
+      netlifyFormData.append("form-name", "contact")
+      netlifyFormData.append("name", formData.name)
+      netlifyFormData.append("email", formData.email)
+      netlifyFormData.append("organizationName", formData.organizationName)
+      netlifyFormData.append("organizationType", formData.organizationType)
+      netlifyFormData.append("organizationSize", formData.organizationSize)
+      netlifyFormData.append("message", formData.message)
 
-      const response = await fetch('/', {
-        method: 'POST',
+      const response = await fetch("/", {
+        method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(netlifyFormData as any).toString()
+        body: new URLSearchParams(netlifyFormData as any).toString(),
       })
 
       if (response.ok) {
-        setSubmitStatus('success')
-        
+        setSubmitStatus("success")
+
         // Reset form after success
         setTimeout(() => {
           setFormData({
-            name: '',
-            email: '',
-            organizationName: '',
-            organizationType: '',
-            organizationSize: '',
-            message: ''
+            name: "",
+            email: "",
+            organizationName: "",
+            organizationType: "",
+            organizationSize: "",
+            message: "",
           })
-          setSubmitStatus('idle')
+          setSubmitStatus("idle")
           setIsContactModalOpen(false)
         }, 3000)
       } else {
-        throw new Error('Network response was not ok')
+        throw new Error("Network response was not ok")
       }
-      
     } catch (error) {
-      setSubmitStatus('error')
-      setTimeout(() => setSubmitStatus('idle'), 3000)
+      setSubmitStatus("error")
+      setTimeout(() => setSubmitStatus("idle"), 3000)
     } finally {
       setIsSubmitting(false)
     }
@@ -122,191 +123,191 @@ export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-white">
       {/* Header */}
-<header
-  className={`fixed top-0 z-50 w-full transition-all duration-500 ${
-    scrollY > 20 
-      ? "bg-slate-900/80 backdrop-blur-xl border-b border-white/10 shadow-2xl" 
-      : "bg-slate-900/60 backdrop-blur-lg border-b border-white/5"
-  }`}
->
-  <div className="container mx-auto px-6">
-    <div className="flex h-20 items-center justify-between">
-     {/* Enhanced Logo Section */}
-      <Link href="/" className="flex items-center gap-4 group">
-        <div className="relative">
-          {/* Logo without container - much larger and cleaner */}
-          <Image 
-            src="/images/dp-logo.png" 
-            alt="ShulPad Logo" 
-            width={50} 
-            height={50} 
-            className="rounded-xl transition-all duration-300 transform group-hover:scale-110 drop-shadow-2xl group-hover:drop-shadow-[0_0_20px_rgba(20,184,166,0.5)]" 
-          />
-        </div>
-        
-        <div className="flex flex-col">
-          {/* Enhanced text visibility - larger and more prominent */}
-         <span className="text-lg font-bold text-white group-hover:text-teal-300 transition-colors duration-300 drop-shadow-lg">
-  ShulPad
-</span>
-          <span className="text-base text-teal-200/90 font-medium -mt-1 hidden sm:block group-hover:text-teal-100 transition-colors duration-300 drop-shadow-sm">
-            Donation Platform
-          </span>
-        </div>
-      </Link>
-
-      {/* Enhanced Navigation Menu */}
-      <nav className="hidden lg:flex items-center space-x-2">
-        {[
-          { name: "Features", href: "#features" },
-          { name: "How It Works", href: "#how-it-works" },
-          { name: "Testimonials", href: "#testimonials" },
-          { name: "Pricing", href: "#pricing" },
-        ].map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            className="relative px-4 py-2 text-sm font-medium text-white/90 hover:text-white transition-all duration-300 group rounded-xl hover:bg-white/10 backdrop-blur-sm"
-          >
-            <span className="relative z-10">{item.name}</span>
-            {/* Enhanced hover effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-teal-500/20 to-blue-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 blur-sm"></div>
-            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-teal-400 to-blue-400 rounded-full group-hover:w-8 transition-all duration-300"></div>
-          </Link>
-        ))}
-      </nav>
-
-      {/* Enhanced Action Buttons */}
-      <div className="hidden md:flex items-center gap-4">
-        <button
-          onClick={() => setIsContactModalOpen(true)}
-          className="px-5 py-2.5 text-sm font-medium text-white/90 hover:text-white rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all duration-300 border border-white/20 hover:border-white/40"
-        >
-          Contact
-        </button>
-        <Button 
-          className="bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white px-6 py-2.5 rounded-xl shadow-2xl hover:shadow-teal-500/25 transition-all duration-300 transform hover:scale-105 group border border-white/20"
-          onClick={() => setIsContactModalOpen(true)}
-        >
-          <span className="font-medium">Get Started</span>
-          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-        </Button>
-      </div>
-
-      {/* Enhanced Mobile Menu Button */}
-      <button
-        className="lg:hidden relative w-12 h-12 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 flex items-center justify-center border border-white/20 hover:border-white/40 group"
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-      >
-        <div className="relative w-6 h-6">
-          <span
-            className={`absolute block w-6 h-0.5 bg-white transition-all duration-300 ${
-              isMenuOpen ? "rotate-45 top-3" : "top-2"
-            }`}
-          ></span>
-          <span
-            className={`absolute block w-6 h-0.5 bg-white top-3 transition-all duration-300 ${
-              isMenuOpen ? "opacity-0" : "opacity-100"
-            }`}
-          ></span>
-          <span
-            className={`absolute block w-6 h-0.5 bg-white transition-all duration-300 ${
-              isMenuOpen ? "-rotate-45 top-3" : "top-4"
-            }`}
-          ></span>
-        </div>
-        {/* Button glow effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-teal-400/20 to-blue-400/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
-      </button>
-    </div>
-
-    {/* Enhanced Mobile Menu with Slide-out Effect */}
-    <div
-      className={`lg:hidden fixed top-20 right-0 h-[calc(100vh-5rem)] w-80 bg-slate-900/95 backdrop-blur-2xl border-l border-white/10 shadow-2xl transition-all duration-500 ease-out ${
-        isMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-      }`}
-    >
-      {/* Backdrop overlay */}
-      <div 
-        className={`fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
-          isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+      <header
+        className={`fixed top-0 z-50 w-full transition-all duration-500 ${
+          scrollY > 20
+            ? "bg-slate-900/80 backdrop-blur-xl border-b border-white/10 shadow-2xl"
+            : "bg-slate-900/60 backdrop-blur-lg border-b border-white/5"
         }`}
-        onClick={() => setIsMenuOpen(false)}
-      ></div>
-      
-      {/* Menu content */}
-      <div className="relative h-full overflow-y-auto">
-        <div className="p-6 space-y-6">
-          {/* Menu header */}
-          <div className="border-b border-white/10 pb-4">
-            <h3 className="text-lg font-semibold text-white">Navigation</h3>
-            <p className="text-sm text-white/60 mt-1">Explore ShulPad</p>
-          </div>
-          
-          {/* Navigation items */}
-          <div className="space-y-2">
-            {[
-              { name: "Features", href: "#features", icon: "⚡" },
-              { name: "How It Works", href: "#how-it-works", icon: "🔄" },
-              { name: "Testimonials", href: "#testimonials", icon: "💬" },
-              { name: "Pricing", href: "#pricing", icon: "💎" },
-            ].map((item, index) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="group block p-4 text-white/90 hover:text-white hover:bg-white/10 rounded-2xl transition-all duration-300 border border-transparent hover:border-white/20 backdrop-blur-sm"
-                onClick={() => setIsMenuOpen(false)}
-                style={{ animationDelay: `${index * 100}ms` }}
+      >
+        <div className="container mx-auto px-6">
+          <div className="flex h-20 items-center justify-between">
+            {/* Enhanced Logo Section */}
+            <Link href="/" className="flex items-center gap-4 group">
+              <div className="relative">
+                {/* Logo without container - much larger and cleaner */}
+                <Image
+                  src="/images/dp-logo.png"
+                  alt="ShulPad Logo"
+                  width={50}
+                  height={50}
+                  className="rounded-xl transition-all duration-300 transform group-hover:scale-110 drop-shadow-2xl group-hover:drop-shadow-[0_0_20px_rgba(20,184,166,0.5)]"
+                />
+              </div>
+
+              <div className="flex flex-col">
+                {/* Enhanced text visibility - larger and more prominent */}
+                <span className="text-lg font-bold text-white group-hover:text-teal-300 transition-colors duration-300 drop-shadow-lg">
+                  ShulPad
+                </span>
+                <span className="text-base text-teal-200/90 font-medium -mt-1 hidden sm:block group-hover:text-teal-100 transition-colors duration-300 drop-shadow-sm">
+                  Donation Platform
+                </span>
+              </div>
+            </Link>
+
+            {/* Enhanced Navigation Menu */}
+            <nav className="hidden lg:flex items-center space-x-2">
+              {[
+                { name: "Features", href: "#features" },
+                { name: "How It Works", href: "#how-it-works" },
+                { name: "Testimonials", href: "#testimonials" },
+                { name: "Pricing", href: "#pricing" },
+              ].map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="relative px-4 py-2 text-sm font-medium text-white/90 hover:text-white transition-all duration-300 group rounded-xl hover:bg-white/10 backdrop-blur-sm"
+                >
+                  <span className="relative z-10">{item.name}</span>
+                  {/* Enhanced hover effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-teal-500/20 to-blue-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 blur-sm"></div>
+                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-teal-400 to-blue-400 rounded-full group-hover:w-8 transition-all duration-300"></div>
+                </Link>
+              ))}
+            </nav>
+
+            {/* Enhanced Action Buttons */}
+            <div className="hidden md:flex items-center gap-4">
+              <button
+                onClick={() => setIsContactModalOpen(true)}
+                className="px-5 py-2.5 text-sm font-medium text-white/90 hover:text-white rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all duration-300 border border-white/20 hover:border-white/40"
               >
-                <div className="flex items-center gap-4">
-                  <span className="text-2xl">{item.icon}</span>
-                  <div>
-                    <div className="font-medium">{item.name}</div>
-                    <div className="text-sm text-white/50 group-hover:text-white/70 transition-colors duration-300">
-                      Learn more about {item.name.toLowerCase()}
-                    </div>
-                  </div>
-                  <ArrowRight className="ml-auto h-4 w-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
-                </div>
-              </Link>
-            ))}
-          </div>
-          
-          {/* Action buttons */}
-          <div className="border-t border-white/10 pt-6 space-y-4">
+                Contact
+              </button>
+              <Button
+                className="bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white px-6 py-2.5 rounded-xl shadow-2xl hover:shadow-teal-500/25 transition-all duration-300 transform hover:scale-105 group border border-white/20"
+                onClick={() => setIsContactModalOpen(true)}
+              >
+                <span className="font-medium">Get Started</span>
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </div>
+
+            {/* Enhanced Mobile Menu Button */}
             <button
-              onClick={() => {
-                setIsMenuOpen(false)
-                setIsContactModalOpen(true)
-              }}
-              className="block w-full p-4 text-center text-white/90 hover:text-white hover:bg-white/10 rounded-2xl transition-all duration-300 border border-white/20 hover:border-white/40 backdrop-blur-sm font-medium"
+              className="lg:hidden relative w-12 h-12 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 flex items-center justify-center border border-white/20 hover:border-white/40 group"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              Contact Us
+              <div className="relative w-6 h-6">
+                <span
+                  className={`absolute block w-6 h-0.5 bg-white transition-all duration-300 ${
+                    isMenuOpen ? "rotate-45 top-3" : "top-2"
+                  }`}
+                ></span>
+                <span
+                  className={`absolute block w-6 h-0.5 bg-white top-3 transition-all duration-300 ${
+                    isMenuOpen ? "opacity-0" : "opacity-100"
+                  }`}
+                ></span>
+                <span
+                  className={`absolute block w-6 h-0.5 bg-white transition-all duration-300 ${
+                    isMenuOpen ? "-rotate-45 top-3" : "top-4"
+                  }`}
+                ></span>
+              </div>
+              {/* Button glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-teal-400/20 to-blue-400/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
             </button>
-            <Button 
-              className="w-full bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white rounded-2xl py-4 font-medium shadow-2xl hover:shadow-teal-500/25 transition-all duration-300 transform hover:scale-105 border border-white/20"
-              onClick={() => {
-                setIsMenuOpen(false)
-                setIsContactModalOpen(true)
-              }}
-            >
-              <span>Get Started</span>
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
           </div>
-          
-          {/* Footer info */}
-          <div className="border-t border-white/10 pt-6">
-            <div className="text-center text-white/50 text-sm">
-              <p>Transform your donation experience</p>
-              <p className="text-xs mt-1 text-white/30">© 2024 ShulPad</p>
+
+          {/* Enhanced Mobile Menu with Slide-out Effect */}
+          <div
+            className={`lg:hidden fixed top-20 right-0 h-[calc(100vh-5rem)] w-80 bg-slate-900/95 backdrop-blur-2xl border-l border-white/10 shadow-2xl transition-all duration-500 ease-out ${
+              isMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+            }`}
+          >
+            {/* Backdrop overlay */}
+            <div
+              className={`fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
+                isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            ></div>
+
+            {/* Menu content */}
+            <div className="relative h-full overflow-y-auto">
+              <div className="p-6 space-y-6">
+                {/* Menu header */}
+                <div className="border-b border-white/10 pb-4">
+                  <h3 className="text-lg font-semibold text-white">Navigation</h3>
+                  <p className="text-sm text-white/60 mt-1">Explore ShulPad</p>
+                </div>
+
+                {/* Navigation items */}
+                <div className="space-y-2">
+                  {[
+                    { name: "Features", href: "#features", icon: "⚡" },
+                    { name: "How It Works", href: "#how-it-works", icon: "🔄" },
+                    { name: "Testimonials", href: "#testimonials", icon: "💬" },
+                    { name: "Pricing", href: "#pricing", icon: "💎" },
+                  ].map((item, index) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="group block p-4 text-white/90 hover:text-white hover:bg-white/10 rounded-2xl transition-all duration-300 border border-transparent hover:border-white/20 backdrop-blur-sm"
+                      onClick={() => setIsMenuOpen(false)}
+                      style={{ animationDelay: `${index * 100}ms` }}
+                    >
+                      <div className="flex items-center gap-4">
+                        <span className="text-2xl">{item.icon}</span>
+                        <div>
+                          <div className="font-medium">{item.name}</div>
+                          <div className="text-sm text-white/50 group-hover:text-white/70 transition-colors duration-300">
+                            Learn more about {item.name.toLowerCase()}
+                          </div>
+                        </div>
+                        <ArrowRight className="ml-auto h-4 w-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+
+                {/* Action buttons */}
+                <div className="border-t border-white/10 pt-6 space-y-4">
+                  <button
+                    onClick={() => {
+                      setIsMenuOpen(false)
+                      setIsContactModalOpen(true)
+                    }}
+                    className="block w-full p-4 text-center text-white/90 hover:text-white hover:bg-white/10 rounded-2xl transition-all duration-300 border border-white/20 hover:border-white/40 backdrop-blur-sm font-medium"
+                  >
+                    Contact Us
+                  </button>
+                  <Button
+                    className="w-full bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white rounded-2xl py-4 font-medium shadow-2xl hover:shadow-teal-500/25 transition-all duration-300 transform hover:scale-105 border border-white/20"
+                    onClick={() => {
+                      setIsMenuOpen(false)
+                      setIsContactModalOpen(true)
+                    }}
+                  >
+                    <span>Get Started</span>
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+
+                {/* Footer info */}
+                <div className="border-t border-white/10 pt-6">
+                  <div className="text-center text-white/50 text-sm">
+                    <p>Transform your donation experience</p>
+                    <p className="text-xs mt-1 text-white/30">© 2024 ShulPad</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</header>
+      </header>
 
       <main className="flex-1">
         {/* Hero Section */}
@@ -356,10 +357,12 @@ export default function LandingPage() {
                   {/* Enhanced Description */}
                   <div className="relative">
                     <p className="max-w-[600px] text-xl text-white/80 leading-relaxed">
-                      ShulPad helps synagogues, churches, and nonprofits collect donations with ease using Square
-                      payment integration.{" "}
-                      <span className="text-teal-300 font-semibold">Increase donations by 40%</span> with our
-                      professional kiosk solution.
+                      ShulPad helps synagogues, churches, and nonprofits collect donations
+                      with ease using Square payment integration.{" "}
+                      <span className="text-teal-300 font-semibold">
+                        Increase donations by 40%
+                      </span>{" "}
+                      with our professional kiosk solution.
                     </p>
                     {/* Accent Line */}
                     <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-teal-400 to-blue-400 rounded-full"></div>
@@ -402,7 +405,10 @@ export default function LandingPage() {
                           className={`h-5 w-5 ${item.color} group-hover:scale-110 transition-transform duration-200`}
                         />
                         <div
-                          className={`absolute inset-0 ${item.color.replace("text-", "bg-")} rounded-full blur-sm opacity-30 group-hover:opacity-60 transition-opacity duration-200`}
+                          className={`absolute inset-0 ${item.color.replace(
+                            "text-",
+                            "bg-"
+                          )} rounded-full blur-sm opacity-30 group-hover:opacity-60 transition-opacity duration-200`}
                         ></div>
                       </div>
                       <span className="text-white/80 font-medium group-hover:text-white transition-colors duration-200">
@@ -425,7 +431,9 @@ export default function LandingPage() {
                             <stat.icon className="w-4 h-4 text-white" />
                           </div>
                           <div>
-                            <div className="text-white font-bold text-lg">{stat.value}</div>
+                            <div className="text-white font-bold text-lg">
+                              {stat.value}
+                            </div>
                             <div className="text-white/60 text-xs">{stat.label}</div>
                           </div>
                         </div>
@@ -525,13 +533,18 @@ export default function LandingPage() {
                 </span>
               </h2>
               <p className="text-white/70 text-lg max-w-2xl mx-auto">
-                Organizations worldwide trust ShulPad to transform their donation experience
+                Organizations worldwide trust ShulPad to transform their donation
+                experience
               </p>
             </div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               {stats.map((stat, index) => (
-                <div key={index} className="group relative" style={{ animationDelay: `${index * 150}ms` }}>
+                <div
+                  key={index}
+                  className="group relative"
+                  style={{ animationDelay: `${index * 150}ms` }}
+                >
                   {/* Card Background */}
                   <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl border border-white/20 group-hover:border-teal-400/50 transition-all duration-500"></div>
 
@@ -556,7 +569,9 @@ export default function LandingPage() {
                     </div>
 
                     {/* Label */}
-                    <div className="text-white/70 font-medium text-sm uppercase tracking-wider">{stat.label}</div>
+                    <div className="text-white/70 font-medium text-sm uppercase tracking-wider">
+                      {stat.label}
+                    </div>
 
                     {/* Progress Bar */}
                     <div className="mt-4 h-1 bg-white/10 rounded-full overflow-hidden">
@@ -617,7 +632,8 @@ export default function LandingPage() {
                 </span>
               </h2>
               <p className="max-w-[800px] text-xl text-white/70 leading-relaxed">
-                ShulPad provides powerful tools to help your organization collect and manage donations effectively.
+                ShulPad provides powerful tools to help your organization collect and manage
+                donations effectively.
               </p>
             </div>
 
@@ -642,7 +658,8 @@ export default function LandingPage() {
                 {
                   icon: Mail,
                   title: "Automatic Receipts",
-                  description: "Send professional email receipts automatically after each donation for tax purposes.",
+                  description:
+                    "Send professional email receipts automatically after each donation for tax purposes.",
                   color: "from-green-500 to-green-600",
                   particles: "bg-green-400/20",
                 },
@@ -655,7 +672,11 @@ export default function LandingPage() {
                   particles: "bg-orange-400/20",
                 },
               ].map((feature, index) => (
-                <div key={index} className="group relative" style={{ animationDelay: `${index * 100}ms` }}>
+                <div
+                  key={index}
+                  className="group relative"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
                   {/* Floating Particles */}
                   <div
                     className={`absolute -top-4 -right-4 w-8 h-8 ${feature.particles} rounded-full blur-sm animate-float`}
@@ -698,7 +719,10 @@ export default function LandingPage() {
         </section>
 
         {/* How It Works Section */}
-        <section id="how-it-works" className="relative w-full py-20 md:py-32 overflow-hidden">
+        <section
+          id="how-it-works"
+          className="relative w-full py-20 md:py-32 overflow-hidden"
+        >
           {/* Dynamic Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-teal-50"></div>
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_20%,rgba(20,184,166,0.1),transparent_50%)]"></div>
@@ -728,25 +752,29 @@ export default function LandingPage() {
                   {
                     step: "1",
                     title: "Download ShulPad",
-                    description: "Download ShulPad from the App Store onto your iPad device.",
+                    description:
+                      "Download ShulPad from the App Store onto your iPad device.",
                     color: "from-teal-500 to-teal-600",
                   },
                   {
                     step: "2",
                     title: "Connect Square Account",
-                    description: "Link your Square merchant account to start accepting payments.",
+                    description:
+                      "Link your Square merchant account to start accepting payments.",
                     color: "from-blue-500 to-blue-600",
                   },
                   {
                     step: "3",
                     title: "Customize Your Settings",
-                    description: "Set your organization name, logo, donation amounts, and email receipt templates.",
+                    description:
+                      "Set your organization name, logo, donation amounts, and email receipt templates.",
                     color: "from-purple-500 to-purple-600",
                   },
                   {
                     step: "4",
                     title: "Start Collecting Donations",
-                    description: "Place your iPad in a visible location and start accepting donations immediately.",
+                    description:
+                      "Place your iPad in a visible location and start accepting donations immediately.",
                     color: "from-green-500 to-green-600",
                   },
                 ].map((item, index) => (
@@ -889,7 +917,9 @@ export default function LandingPage() {
                         <div
                           className={`rounded-full bg-gradient-to-r ${testimonial.gradient} p-3 shadow-lg group-hover:scale-110 transition-transform duration-300 relative`}
                         >
-                          <span className="text-lg font-bold text-white relative z-10">{testimonial.initials}</span>
+                          <span className="text-lg font-bold text-white relative z-10">
+                            {testimonial.initials}
+                          </span>
                           <div className="absolute inset-0 bg-white/20 rounded-full blur-sm group-hover:blur-md transition-all duration-300"></div>
                         </div>
                         <div>
@@ -1005,7 +1035,9 @@ export default function LandingPage() {
                   >
                     {/* Card Background */}
                     <div
-                      className={`absolute inset-0 bg-gradient-to-br ${plan.gradient} ${plan.popular ? "" : "opacity-90"}`}
+                      className={`absolute inset-0 bg-gradient-to-br ${plan.gradient} ${
+                        plan.popular ? "" : "opacity-90"
+                      }`}
                     ></div>
 
                     {/* Border Gradient */}
@@ -1017,18 +1049,34 @@ export default function LandingPage() {
                     <div className="relative p-8">
                       <div className="space-y-6">
                         <div>
-                          <h3 className={`text-2xl font-bold ${plan.popular ? "text-white" : "text-gray-900"}`}>
+                          <h3
+                            className={`text-2xl font-bold ${
+                              plan.popular ? "text-white" : "text-gray-900"
+                            }`}
+                          >
                             {plan.name}
                           </h3>
                           <div className="mt-4">
-                            <span className={`text-5xl font-bold ${plan.popular ? "text-white" : "text-gray-900"}`}>
+                            <span
+                              className={`text-5xl font-bold ${
+                                plan.popular ? "text-white" : "text-gray-900"
+                              }`}
+                            >
                               {plan.price}
                             </span>
-                            <span className={`text-lg ${plan.popular ? "text-teal-100" : "text-gray-600"}`}>
+                            <span
+                              className={`text-lg ${
+                                plan.popular ? "text-teal-100" : "text-gray-600"
+                              }`}
+                            >
                               /month
                             </span>
                           </div>
-                          <p className={`mt-4 ${plan.popular ? "text-teal-100" : "text-gray-600"}`}>
+                          <p
+                            className={`mt-4 ${
+                              plan.popular ? "text-teal-100" : "text-gray-600"
+                            }`}
+                          >
                             {plan.description}
                           </p>
                         </div>
@@ -1037,12 +1085,20 @@ export default function LandingPage() {
                           {plan.features.map((feature, featureIndex) => (
                             <li key={featureIndex} className="flex items-center gap-3 group/item">
                               <div
-                                className={`rounded-full p-1 ${plan.popular ? "bg-teal-200/20" : "bg-teal-100"} group-hover/item:scale-110 transition-transform duration-200`}
+                                className={`rounded-full p-1 ${
+                                  plan.popular ? "bg-teal-200/20" : "bg-teal-100"
+                                } group-hover/item:scale-110 transition-transform duration-200`}
                               >
-                                <Check className={`h-4 w-4 ${plan.popular ? "text-teal-200" : "text-teal-500"}`} />
+                                <Check
+                                  className={`h-4 w-4 ${
+                                    plan.popular ? "text-teal-200" : "text-teal-500"
+                                  }`}
+                                />
                               </div>
                               <span
-                                className={`${plan.popular ? "text-teal-50" : "text-gray-700"} group-hover/item:translate-x-1 transition-transform duration-200`}
+                                className={`${
+                                  plan.popular ? "text-teal-50" : "text-gray-700"
+                                } group-hover/item:translate-x-1 transition-transform duration-200`}
                               >
                                 {feature}
                               </span>
@@ -1095,7 +1151,8 @@ export default function LandingPage() {
                 Ready to transform your donation experience?
               </h2>
               <p className="max-w-[600px] text-xl text-teal-100 leading-relaxed">
-                Join hundreds of organizations already using ShulPad to increase donations and simplify giving.
+                Join hundreds of organizations already using ShulPad to increase donations and
+                simplify giving.
               </p>
 
               <div className="flex flex-col gap-4 sm:flex-row">
@@ -1118,12 +1175,14 @@ export default function LandingPage() {
               </div>
 
               <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-teal-100">
-                {["Free 14-day trial", "No credit card required", "Cancel anytime"].map((item, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <Check className="h-4 w-4" />
-                    <span>{item}</span>
-                  </div>
-                ))}
+                {["Free 14-day trial", "No credit card required", "Cancel anytime"].map(
+                  (item, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <Check className="h-4 w-4" />
+                      <span>{item}</span>
+                    </div>
+                  )
+                )}
               </div>
             </div>
           </div>
@@ -1136,7 +1195,13 @@ export default function LandingPage() {
           <div className="grid gap-8 md:grid-cols-4">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <Image src="/images/dp-logo.png" alt="ShulPad Logo" width={30} height={30} className="rounded-md" />
+                <Image
+                  src="/images/dp-logo.png"
+                  alt="ShulPad Logo"
+                  width={30}
+                  height={30}
+                  className="rounded-md"
+                />
                 <span className="text-lg font-bold">ShulPad</span>
               </div>
               <p className="text-gray-400 text-sm">
@@ -1191,7 +1256,9 @@ export default function LandingPage() {
           </div>
 
           <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-gray-400">&copy; {new Date().getFullYear()} ShulPad. All rights reserved.</p>
+            <p className="text-sm text-gray-400">
+              © {new Date().getFullYear()} ShulPad. All rights reserved.
+            </p>
             <div className="flex items-center gap-4 mt-4 md:mt-0">
               <Link href="#" className="text-gray-400 hover:text-white transition-colors">
                 <span className="sr-only">Twitter</span>
@@ -1217,194 +1284,293 @@ export default function LandingPage() {
       {/* Contact Modal */}
       {isContactModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* Backdrop */}
-          <div 
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300"
+          {/* Enhanced Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/40 backdrop-blur-md transition-all duration-500"
             onClick={() => setIsContactModalOpen(false)}
           ></div>
 
           {/* Modal Content */}
-          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            {/* Background Effects */}
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900/95 via-gray-900/95 to-slate-900/95 backdrop-blur-xl rounded-3xl"></div>
-            <div className="absolute inset-0 bg-gradient-to-br from-teal-400/10 via-blue-400/5 to-purple-400/10 rounded-3xl"></div>
-            
-            {/* Grid Pattern */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] rounded-3xl"></div>
-            
+          <div className="relative w-full max-w-3xl max-h-[95vh] bg-white/[0.08] backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl overflow-y-auto">
+            {/* Advanced Glassmorphism Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-white/[0.08] to-white/[0.04] rounded-3xl"></div>
+
+            {/* Subtle Inner Glow */}
+            <div className="absolute inset-px bg-gradient-to-br from-white/[0.06] to-transparent rounded-3xl"></div>
+
             {/* Content */}
-            <div className="relative p-8">
-              {/* Header */}
-              <div className="flex items-center justify-between mb-8">
-                <div>
-                  <h2 className="text-3xl font-bold text-white mb-2">
-                    Let's Get You Started
+            <div className="relative p-10">
+              {/* Minimalist Header */}
+              <div className="flex items-start justify-between mb-10">
+                <div className="space-y-2">
+                  <h2 className="text-4xl font-light text-white tracking-tight">
+                    Get Started
                   </h2>
-                  <p className="text-white/70">
-                    Tell us about your organization and we'll help you transform your donation experience.
+                  <p className="text-white/60 text-lg font-light leading-relaxed max-w-md">
+                    Share your details and we'll help transform your donation experience
                   </p>
                 </div>
                 <button
                   onClick={() => setIsContactModalOpen(false)}
-                  className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 group"
+                  className="group p-3 text-white/40 hover:text-white/80 hover:bg-white/10 rounded-2xl transition-all duration-300 backdrop-blur-sm border border-white/10 hover:border-white/30"
                 >
-                  <X className="w-6 h-6 group-hover:rotate-90 transition-transform duration-200" />
+                  <X className="w-5 h-5 transition-transform duration-300 group-hover:rotate-90" />
                 </button>
               </div>
 
-              {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-6" name="contact" method="POST" data-netlify="true">
+              {/* Enterprise-Grade Form */}
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-8"
+                name="contact"
+                method="POST"
+                data-netlify="true"
+              >
                 {/* Hidden field for Netlify */}
                 <input type="hidden" name="form-name" value="contact" />
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Name */}
-                  <div className="space-y-2">
-                    <label className="flex items-center gap-2 text-sm font-medium text-white/90">
-                      <User className="w-4 h-4 text-teal-400" />
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal-400/50 focus:border-teal-400/50 backdrop-blur-sm transition-all duration-200"
-                      placeholder="Enter your full name"
-                    />
-                  </div>
 
-                  {/* Email */}
-                  <div className="space-y-2">
-                    <label className="flex items-center gap-2 text-sm font-medium text-white/90">
-                      <Mail className="w-4 h-4 text-blue-400" />
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 backdrop-blur-sm transition-all duration-200"
-                      placeholder="your@email.com"
-                    />
-                  </div>
+                {/* Contact Information Section */}
+                <div className="space-y-6">
+                  <h3 className="text-sm font-medium text-white/80 uppercase tracking-wider border-b border-white/10 pb-3">
+                    Contact Information
+                  </h3>
 
-                  {/* Organization Name */}
-                  <div className="space-y-2">
-                    <label className="flex items-center gap-2 text-sm font-medium text-white/90">
-                      <Building className="w-4 h-4 text-purple-400" />
-                      Organization Name
-                    </label>
-                    <input
-                      type="text"
-                      name="organizationName"
-                      value={formData.organizationName}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-400/50 focus:border-purple-400/50 backdrop-blur-sm transition-all duration-200"
-                      placeholder="Your organization name"
-                    />
-                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Name Field */}
+                    <div className="group">
+                      <label className="block text-sm font-medium text-white/70 mb-3">
+                        Full Name
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleInputChange}
+                          required
+                          className="w-full px-6 py-4 bg-white/[0.08] border border-white/20 rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/40 backdrop-blur-sm transition-all duration-300 text-base"
+                          placeholder="John Smith"
+                        />
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                      </div>
+                    </div>
 
-                  {/* Organization Type */}
-                  <div className="space-y-2">
-                    <label className="flex items-center gap-2 text-sm font-medium text-white/90">
-                      <Settings className="w-4 h-4 text-green-400" />
-                      Organization Type
-                    </label>
-                    <select
-                      name="organizationType"
-                      value={formData.organizationType}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 backdrop-blur-sm transition-all duration-200"
-                    >
-                      <option value="" className="bg-gray-900 text-white">Select type...</option>
-                      <option value="synagogue" className="bg-gray-900 text-white">Synagogue</option>
-                      <option value="church" className="bg-gray-900 text-white">Church</option>
-                      <option value="mosque" className="bg-gray-900 text-white">Mosque</option>
-                      <option value="nonprofit" className="bg-gray-900 text-white">Nonprofit</option>
-                      <option value="charity" className="bg-gray-900 text-white">Charity</option>
-                      <option value="school" className="bg-gray-900 text-white">School</option>
-                      <option value="other" className="bg-gray-900 text-white">Other</option>
-                    </select>
-                  </div>
-
-                  {/* Organization Size */}
-                  <div className="space-y-2 md:col-span-2">
-                    <label className="flex items-center gap-2 text-sm font-medium text-white/90">
-                      <Users className="w-4 h-4 text-orange-400" />
-                      Organization Size
-                    </label>
-                    <select
-                      name="organizationSize"
-                      value={formData.organizationSize}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-400/50 focus:border-orange-400/50 backdrop-blur-sm transition-all duration-200"
-                    >
-                      <option value="" className="bg-gray-900 text-white">Select size...</option>
-                      <option value="small" className="bg-gray-900 text-white">Small (1-50 members)</option>
-                      <option value="medium" className="bg-gray-900 text-white">Medium (51-200 members)</option>
-                      <option value="large" className="bg-gray-900 text-white">Large (201-500 members)</option>
-                      <option value="xlarge" className="bg-gray-900 text-white">Very Large (500+ members)</option>
-                    </select>
+                    {/* Email Field */}
+                    <div className="group">
+                      <label className="block text-sm font-medium text-white/70 mb-3">
+                        Email Address
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          required
+                          className="w-full px-6 py-4 bg-white/[0.08] border border-white/20 rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/40 backdrop-blur-sm transition-all duration-300 text-base"
+                          placeholder="john@example.com"
+                        />
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Message */}
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 text-sm font-medium text-white/90">
-                    <MessageSquare className="w-4 h-4 text-pink-400" />
-                    Message
-                  </label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    rows={4}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-pink-400/50 backdrop-blur-sm transition-all duration-200 resize-none"
-                    placeholder="Tell us about your needs, timeline, or any questions you have..."
-                  />
+                {/* Organization Details Section */}
+                <div className="space-y-6">
+                  <h3 className="text-sm font-medium text-white/80 uppercase tracking-wider border-b border-white/10 pb-3">
+                    Organization Details
+                  </h3>
+
+                  <div className="space-y-6">
+                    {/* Organization Name */}
+                    <div className="group">
+                      <label className="block text-sm font-medium text-white/70 mb-3">
+                        Organization Name
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          name="organizationName"
+                          value={formData.organizationName}
+                          onChange={handleInputChange}
+                          required
+                          className="w-full px-6 py-4 bg-white/[0.08] border border-white/20 rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/40 backdrop-blur-sm transition-all duration-300 text-base"
+                          placeholder="Your Organization"
+                        />
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Organization Type */}
+                      <div className="group">
+                        <label className="block text-sm font-medium text-white/70 mb-3">
+                          Organization Type
+                        </label>
+                        <div className="relative">
+                          <select
+                            name="organizationType"
+                            value={formData.organizationType}
+                            onChange={handleInputChange}
+                            required
+                            className="w-full px-6 py-4 bg-white/[0.08] border border-white/20 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/40 backdrop-blur-sm transition-all duration-300 text-base appearance-none cursor-pointer"
+                          >
+                            <option value="" className="bg-gray-900 text-white">
+                              Select type
+                            </option>
+                            <option value="synagogue" className="bg-gray-900 text-white">
+                              Synagogue
+                            </option>
+                            <option value="church" className="bg-gray-900 text-white">
+                              Church
+                            </option>
+                            <option value="mosque" className="bg-gray-900 text-white">
+                              Mosque
+                            </option>
+                            <option value="nonprofit" className="bg-gray-900 text-white">
+                              Nonprofit
+                            </option>
+                            <option value="charity" className="bg-gray-900 text-white">
+                              Charity
+                            </option>
+                            <option value="school" className="bg-gray-900 text-white">
+                              School
+                            </option>
+                            <option value="other" className="bg-gray-900 text-white">
+                              Other
+                            </option>
+                          </select>
+                          {/* Custom dropdown arrow */}
+                          <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                            <svg
+                              className="w-5 h-5 text-white/60"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={1.5}
+                                d="m19 9-7 7-7-7"
+                              />
+                            </svg>
+                          </div>
+                          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                        </div>
+                      </div>
+
+                      {/* Organization Size */}
+                      <div className="group">
+                        <label className="block text-sm font-medium text-white/70 mb-3">
+                          Organization Size
+                        </label>
+                        <div className="relative">
+                          <select
+                            name="organizationSize"
+                            value={formData.organizationSize}
+                            onChange={handleInputChange}
+                            required
+                            className="w-full px-6 py-4 bg-white/[0.08] border border-white/20 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/40 backdrop-blur-sm transition-all duration-300 text-base appearance-none cursor-pointer"
+                          >
+                            <option value="" className="bg-gray-900 text-white">
+                              Select size
+                            </option>
+                            <option value="small" className="bg-gray-900 text-white">
+                              Small (1-50 members)
+                            </option>
+                            <option value="medium" className="bg-gray-900 text-white">
+                              Medium (51-200 members)
+                            </option>
+                            <option value="large" className="bg-gray-900 text-white">
+                              Large (201-500 members)
+                            </option>
+                            <option value="xlarge" className="bg-gray-900 text-white">
+                              Very Large (500+ members)
+                            </option>
+                          </select>
+                          {/* Custom dropdown arrow */}
+                          <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                            <svg
+                              className="w-5 h-5 text-white/60"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={1.5}
+                                d="m19 9-7 7-7-7"
+                              />
+                            </svg>
+                          </div>
+                          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Submit Button */}
-                <div className="flex gap-4 pt-4">
+                {/* Additional Information Section */}
+                <div className="space-y-6">
+                  <h3 className="text-sm font-medium text-white/80 uppercase tracking-wider border-b border-white/10 pb-3">
+                    Additional Information
+                  </h3>
+
+                  {/* Message Field */}
+                  <div className="group">
+                    <label className="block text-sm font-medium text-white/70 mb-3">
+                      Tell us about your needs
+                    </label>
+                    <div className="relative">
+                      <textarea
+                        name="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        rows={5}
+                        className="w-full px-6 py-4 bg-white/[0.08] border border-white/20 rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/40 backdrop-blur-sm transition-all duration-300 resize-none text-base leading-relaxed"
+                        placeholder="Share your timeline, specific requirements, or any questions you have about ShulPad..."
+                      />
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-white/10">
                   <Button
                     type="button"
-                    variant="outline"
                     onClick={() => setIsContactModalOpen(false)}
-                    className="flex-1 border-white/20 text-white/80 hover:text-white hover:bg-white/10 hover:border-white/40 backdrop-blur-sm transition-all duration-200"
+                    className="flex-1 bg-white/[0.08] border border-white/20 text-white/80 hover:text-white hover:bg-white/[0.12] hover:border-white/30 backdrop-blur-sm transition-all duration-300 rounded-2xl py-4 font-medium"
                   >
                     Cancel
                   </Button>
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex-1 bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white shadow-xl hover:shadow-teal-500/25 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none group"
+                    className="flex-1 bg-gradient-to-r from-white/20 to-white/10 border border-white/30 text-white hover:from-white/30 hover:to-white/20 hover:border-white/40 backdrop-blur-sm transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none rounded-2xl py-4 font-medium shadow-lg hover:shadow-white/10 group"
                   >
                     {isSubmitting ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                        <span>Sending...</span>
+                      <div className="flex items-center justify-center gap-3">
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        <span>Sending</span>
                       </div>
-                    ) : submitStatus === 'success' ? (
-                      <div className="flex items-center gap-2">
-                        <Check className="w-4 h-4" />
-                        <span>Sent Successfully!</span>
+                    ) : submitStatus === "success" ? (
+                      <div className="flex items-center justify-center gap-3">
+                        <Check className="w-5 h-5" />
+                        <span>Sent Successfully</span>
                       </div>
-                    ) : submitStatus === 'error' ? (
-                      <div className="flex items-center gap-2">
-                        <X className="w-4 h-4" />
+                    ) : submitStatus === "error" ? (
+                      <div className="flex items-center justify-center gap-3">
+                        <X className="w-5 h-5" />
                         <span>Error - Try Again</span>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-2">
-                        <Send className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                      <div className="flex items-center justify-center gap-3">
                         <span>Send Message</span>
+                        <Send className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </div>
                     )}
                   </Button>
@@ -1412,24 +1578,21 @@ export default function LandingPage() {
               </form>
 
               {/* Success Message */}
-              {submitStatus === 'success' && (
-                <div className="mt-6 p-4 bg-green-500/20 border border-green-400/30 rounded-xl">
-                  <div className="flex items-center gap-3">
-                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
+              {submitStatus === "success" && (
+                <div className="mt-8 p-6 bg-green-500/10 border border-green-400/20 rounded-2xl backdrop-blur-sm">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 w-6 h-6 bg-green-400/20 rounded-full flex items-center justify-center mt-0.5">
+                      <Check className="w-3 h-3 text-green-300" />
                     </div>
-                    <div>
-                      <p className="text-green-300 font-medium">Message sent successfully!</p>
-                      <p className="text-green-200/80 text-sm">We'll get back to you within 24 hours.</p>
+                    <div className="space-y-1">
+                      <p className="text-green-200 font-medium">Message sent successfully</p>
+                      <p className="text-green-200/70 text-sm">
+                        We'll get back to you within 24 hours with next steps.
+                      </p>
                     </div>
                   </div>
                 </div>
               )}
-
-              {/* Floating Particles */}
-              <div className="absolute top-8 right-8 w-2 h-2 bg-teal-400/60 rounded-full animate-ping"></div>
-              <div className="absolute bottom-8 left-8 w-3 h-3 bg-blue-400/40 rounded-full animate-float"></div>
-              <div className="absolute top-1/2 right-4 w-1 h-1 bg-purple-400/60 rounded-full animate-pulse"></div>
             </div>
           </div>
         </div>

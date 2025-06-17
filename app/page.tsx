@@ -38,127 +38,189 @@ export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-white">
       {/* Header */}
-      <header
-        className={`fixed top-0 z-50 w-full transition-all duration-500 ${
-          scrollY > 50 ? "bg-white/95 backdrop-blur-xl border-b border-gray-200/50 shadow-sm" : "bg-transparent"
-        }`}
-      >
-        <div className="container mx-auto px-6">
-          <div className="flex h-16 items-center justify-between">
-            {/* Logo Section */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative">
-                <div className="relative rounded-xl p-2 shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-105">
-  <Image src="/images/dp-logo.png" alt="ShulPad Logo" width={28} height={28} className="rounded-lg" />
-</div>
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-teal-400 to-blue-400 rounded-full animate-pulse"></div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-bold text-gray-900 group-hover:text-teal-600 transition-colors duration-300">
-                  ShulPad
-                </span>
-                <span className="text-xs text-gray-500 font-medium -mt-1 hidden sm:block">Donation Platform</span>
-              </div>
-            </Link>
-
-            {/* Navigation Menu */}
-            <nav className="hidden lg:flex items-center space-x-8">
-              {[
-                { name: "Features", href: "#features" },
-                { name: "How It Works", href: "#how-it-works" },
-                { name: "Testimonials", href: "#testimonials" },
-                { name: "Pricing", href: "#pricing" },
-              ].map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="relative text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors duration-300 group"
-                >
-                  {item.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-teal-500 to-blue-500 group-hover:w-full transition-all duration-300"></span>
-                </Link>
-              ))}
-            </nav>
-
-            {/* Action Buttons */}
-            <div className="hidden md:flex items-center gap-4">
-              <Link
-                href="#contact"
-                className="text-sm font-medium text-gray-700 hover:text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-100/80 transition-all duration-300"
-              >
-                Contact
-              </Link>
-              <Button className="bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-700 hover:to-blue-700 text-white px-6 py-2.5 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 group">
-                <span className="font-medium">Get Started</span>
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="lg:hidden relative w-10 h-10 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors duration-300 flex items-center justify-center"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              <div className="relative w-5 h-5">
-                <span
-                  className={`absolute block w-5 h-0.5 bg-gray-700 transition-all duration-300 ${
-                    isMenuOpen ? "rotate-45 top-2" : "top-1"
-                  }`}
-                ></span>
-                <span
-                  className={`absolute block w-5 h-0.5 bg-gray-700 top-2 transition-all duration-300 ${
-                    isMenuOpen ? "opacity-0" : "opacity-100"
-                  }`}
-                ></span>
-                <span
-                  className={`absolute block w-5 h-0.5 bg-gray-700 transition-all duration-300 ${
-                    isMenuOpen ? "-rotate-45 top-2" : "top-3"
-                  }`}
-                ></span>
-              </div>
-            </button>
+<header
+  className={`fixed top-0 z-50 w-full transition-all duration-500 ${
+    scrollY > 20 
+      ? "bg-slate-900/80 backdrop-blur-xl border-b border-white/10 shadow-2xl" 
+      : "bg-slate-900/60 backdrop-blur-lg border-b border-white/5"
+  }`}
+>
+  <div className="container mx-auto px-6">
+    <div className="flex h-20 items-center justify-between">
+      {/* Enhanced Logo Section */}
+      <Link href="/" className="flex items-center gap-4 group">
+        <div className="relative">
+          {/* Logo container with enhanced visibility */}
+          <div className="relative bg-white/10 backdrop-blur-sm rounded-2xl p-3 shadow-2xl group-hover:shadow-teal-500/25 transition-all duration-300 transform group-hover:scale-105 border border-white/20 group-hover:border-teal-400/50">
+            <Image 
+              src="/images/dp-logo.png" 
+              alt="ShulPad Logo" 
+              width={36} 
+              height={36} 
+              className="rounded-xl relative z-10" 
+            />
+            {/* Glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-teal-400/20 to-blue-400/20 rounded-2xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
+          {/* Animated status indicator */}
+          <div className="absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-r from-teal-400 to-blue-400 rounded-full animate-pulse shadow-lg"></div>
+        </div>
+        
+        <div className="flex flex-col">
+          {/* Enhanced text visibility */}
+          <span className="text-2xl font-bold text-white group-hover:text-teal-300 transition-colors duration-300 drop-shadow-lg">
+            ShulPad
+          </span>
+          <span className="text-sm text-teal-200/80 font-medium -mt-1 hidden sm:block group-hover:text-teal-100 transition-colors duration-300">
+            Donation Platform
+          </span>
+        </div>
+      </Link>
 
-          {/* Mobile Menu */}
-          <div
-            className={`lg:hidden transition-all duration-300 ease-out ${
-              isMenuOpen ? "max-h-96 opacity-100 pb-6" : "max-h-0 opacity-0 overflow-hidden"
-            }`}
+      {/* Enhanced Navigation Menu */}
+      <nav className="hidden lg:flex items-center space-x-2">
+        {[
+          { name: "Features", href: "#features" },
+          { name: "How It Works", href: "#how-it-works" },
+          { name: "Testimonials", href: "#testimonials" },
+          { name: "Pricing", href: "#pricing" },
+        ].map((item) => (
+          <Link
+            key={item.name}
+            href={item.href}
+            className="relative px-4 py-2 text-sm font-medium text-white/90 hover:text-white transition-all duration-300 group rounded-xl hover:bg-white/10 backdrop-blur-sm"
           >
-            <div className="bg-white rounded-xl border border-gray-200 shadow-lg p-6 mt-4">
-              <div className="space-y-4">
-                {[
-                  { name: "Features", href: "#features" },
-                  { name: "How It Works", href: "#how-it-works" },
-                  { name: "Testimonials", href: "#testimonials" },
-                  { name: "Pricing", href: "#pricing" },
-                ].map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="block px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all duration-300 font-medium"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-                <div className="border-t border-gray-200 pt-4 mt-4">
-                  <Link
-                    href="#contact"
-                    className="block px-4 py-3 text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all duration-300 font-medium mb-3"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Contact
-                  </Link>
-                  <Button className="w-full bg-gradient-to-r from-teal-600 to-blue-600 text-white rounded-lg py-3 font-medium shadow-lg hover:shadow-xl transition-all duration-300">
-                    Get Started
-                  </Button>
+            <span className="relative z-10">{item.name}</span>
+            {/* Enhanced hover effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-teal-500/20 to-blue-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 blur-sm"></div>
+            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-teal-400 to-blue-400 rounded-full group-hover:w-8 transition-all duration-300"></div>
+          </Link>
+        ))}
+      </nav>
+
+      {/* Enhanced Action Buttons */}
+      <div className="hidden md:flex items-center gap-4">
+        <Link
+          href="#contact"
+          className="px-5 py-2.5 text-sm font-medium text-white/90 hover:text-white rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all duration-300 border border-white/20 hover:border-white/40"
+        >
+          Contact
+        </Link>
+        <Button className="bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white px-6 py-2.5 rounded-xl shadow-2xl hover:shadow-teal-500/25 transition-all duration-300 transform hover:scale-105 group border border-white/20">
+          <span className="font-medium">Get Started</span>
+          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+        </Button>
+      </div>
+
+      {/* Enhanced Mobile Menu Button */}
+      <button
+        className="lg:hidden relative w-12 h-12 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 flex items-center justify-center border border-white/20 hover:border-white/40 group"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+      >
+        <div className="relative w-6 h-6">
+          <span
+            className={`absolute block w-6 h-0.5 bg-white transition-all duration-300 ${
+              isMenuOpen ? "rotate-45 top-3" : "top-2"
+            }`}
+          ></span>
+          <span
+            className={`absolute block w-6 h-0.5 bg-white top-3 transition-all duration-300 ${
+              isMenuOpen ? "opacity-0" : "opacity-100"
+            }`}
+          ></span>
+          <span
+            className={`absolute block w-6 h-0.5 bg-white transition-all duration-300 ${
+              isMenuOpen ? "-rotate-45 top-3" : "top-4"
+            }`}
+          ></span>
+        </div>
+        {/* Button glow effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-teal-400/20 to-blue-400/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
+      </button>
+    </div>
+
+    {/* Enhanced Mobile Menu with Slide-out Effect */}
+    <div
+      className={`lg:hidden fixed top-20 right-0 h-[calc(100vh-5rem)] w-80 bg-slate-900/95 backdrop-blur-2xl border-l border-white/10 shadow-2xl transition-all duration-500 ease-out ${
+        isMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+      }`}
+    >
+      {/* Backdrop overlay */}
+      <div 
+        className={`fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
+          isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setIsMenuOpen(false)}
+      ></div>
+      
+      {/* Menu content */}
+      <div className="relative h-full overflow-y-auto">
+        <div className="p-6 space-y-6">
+          {/* Menu header */}
+          <div className="border-b border-white/10 pb-4">
+            <h3 className="text-lg font-semibold text-white">Navigation</h3>
+            <p className="text-sm text-white/60 mt-1">Explore ShulPad</p>
+          </div>
+          
+          {/* Navigation items */}
+          <div className="space-y-2">
+            {[
+              { name: "Features", href: "#features", icon: "⚡" },
+              { name: "How It Works", href: "#how-it-works", icon: "🔄" },
+              { name: "Testimonials", href: "#testimonials", icon: "💬" },
+              { name: "Pricing", href: "#pricing", icon: "💎" },
+            ].map((item, index) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="group block p-4 text-white/90 hover:text-white hover:bg-white/10 rounded-2xl transition-all duration-300 border border-transparent hover:border-white/20 backdrop-blur-sm"
+                onClick={() => setIsMenuOpen(false)}
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="flex items-center gap-4">
+                  <span className="text-2xl">{item.icon}</span>
+                  <div>
+                    <div className="font-medium">{item.name}</div>
+                    <div className="text-sm text-white/50 group-hover:text-white/70 transition-colors duration-300">
+                      Learn more about {item.name.toLowerCase()}
+                    </div>
+                  </div>
+                  <ArrowRight className="ml-auto h-4 w-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
                 </div>
-              </div>
+              </Link>
+            ))}
+          </div>
+          
+          {/* Action buttons */}
+          <div className="border-t border-white/10 pt-6 space-y-4">
+            <Link
+              href="#contact"
+              className="block w-full p-4 text-center text-white/90 hover:text-white hover:bg-white/10 rounded-2xl transition-all duration-300 border border-white/20 hover:border-white/40 backdrop-blur-sm font-medium"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Contact Us
+            </Link>
+            <Button 
+              className="w-full bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white rounded-2xl py-4 font-medium shadow-2xl hover:shadow-teal-500/25 transition-all duration-300 transform hover:scale-105 border border-white/20"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <span>Get Started</span>
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+          
+          {/* Footer info */}
+          <div className="border-t border-white/10 pt-6">
+            <div className="text-center text-white/50 text-sm">
+              <p>Transform your donation experience</p>
+              <p className="text-xs mt-1 text-white/30">© 2024 ShulPad</p>
             </div>
           </div>
         </div>
-      </header>
+      </div>
+    </div>
+  </div>
+</header>
 
       <main className="flex-1">
         {/* Hero Section */}

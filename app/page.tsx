@@ -105,8 +105,10 @@ export default function LandingPage() {
         </Link>
         <Button 
   className="text-white px-6 py-2.5 rounded-xl shadow-2xl transition-all duration-300 transform hover:scale-105 group border border-white/20"
- style={{
-  background: 'linear-gradient(90deg, #426BC8 0%, #426BC8 15%, #4D54AC 60%, #E67097 100%)'
+style={{
+  background: 'linear-gradient(90deg, #426BC8 0%, #426BC8 25%, #4D54AC 65%, #E67097 100%)',
+  backgroundSize: '100% 100%',
+  backgroundRepeat: 'no-repeat'
 }}
 >
           <span className="font-medium">Get Started</span>

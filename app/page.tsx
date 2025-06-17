@@ -47,31 +47,27 @@ export default function LandingPage() {
 >
   <div className="container mx-auto px-6">
     <div className="flex h-20 items-center justify-between">
-      {/* Enhanced Logo Section */}
+     {/* Enhanced Logo Section */}
       <Link href="/" className="flex items-center gap-4 group">
         <div className="relative">
-          {/* Logo container with enhanced visibility */}
-          <div className="relative bg-white/10 backdrop-blur-sm rounded-2xl p-3 shadow-2xl group-hover:shadow-teal-500/25 transition-all duration-300 transform group-hover:scale-105 border border-white/20 group-hover:border-teal-400/50">
-            <Image 
-              src="/images/dp-logo.png" 
-              alt="ShulPad Logo" 
-              width={36} 
-              height={36} 
-              className="rounded-xl relative z-10" 
-            />
-            {/* Glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-teal-400/20 to-blue-400/20 rounded-2xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </div>
+          {/* Logo without container - much larger and cleaner */}
+          <Image 
+            src="/images/dp-logo.png" 
+            alt="ShulPad Logo" 
+            width={60} 
+            height={60} 
+            className="rounded-xl transition-all duration-300 transform group-hover:scale-110 drop-shadow-2xl group-hover:drop-shadow-[0_0_20px_rgba(20,184,166,0.5)]" 
+          />
           {/* Animated status indicator */}
           <div className="absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-r from-teal-400 to-blue-400 rounded-full animate-pulse shadow-lg"></div>
         </div>
         
         <div className="flex flex-col">
-          {/* Enhanced text visibility */}
-          <span className="text-2xl font-bold text-white group-hover:text-teal-300 transition-colors duration-300 drop-shadow-lg">
+          {/* Enhanced text visibility - larger and more prominent */}
+          <span className="text-3xl font-bold text-white group-hover:text-teal-300 transition-colors duration-300 drop-shadow-lg">
             ShulPad
           </span>
-          <span className="text-sm text-teal-200/80 font-medium -mt-1 hidden sm:block group-hover:text-teal-100 transition-colors duration-300">
+          <span className="text-base text-teal-200/90 font-medium -mt-1 hidden sm:block group-hover:text-teal-100 transition-colors duration-300 drop-shadow-sm">
             Donation Platform
           </span>
         </div>

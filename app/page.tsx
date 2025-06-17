@@ -65,13 +65,9 @@ export default function LandingPage() {
          <span className="text-lg font-bold text-white group-hover:text-teal-300 transition-colors duration-300 drop-shadow-lg">
   ShulPad
 </span>
-       <span 
-  className="text-base font-medium -mt-1 hidden sm:block transition-all duration-300 drop-shadow-sm bg-clip-text text-transparent"
-  style={{
-    background: 'linear-gradient(90deg, rgba(32, 83, 187, 1) 0%, rgba(108, 88, 168, 1) 50%, rgba(223, 96, 135, 1) 100%)',
-    WebkitBackgroundClip: 'text',
-    backgroundClip: 'text'
-  }}
+      <span 
+  className="text-base font-medium -mt-1 hidden sm:block transition-colors duration-300 drop-shadow-sm"
+  style={{ color: '#DF6087' }}
 >
   Donation Platform
 </span>
@@ -110,8 +106,8 @@ export default function LandingPage() {
         <Button 
   className="text-white px-6 py-2.5 rounded-xl shadow-2xl transition-all duration-300 transform hover:scale-105 group border border-white/20"
   style={{
-    background: 'linear-gradient(90deg, rgba(32, 83, 187, 1) 0%, rgba(108, 88, 168, 1) 50%, rgba(223, 96, 135, 1) 100%)'
-  }}
+  background: 'linear-gradient(90deg, #2053BB 0%, #2053BB 20%, #6C58A8 70%, #DF6087 100%)'
+}}
 >
           <span className="font-medium">Get Started</span>
           <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

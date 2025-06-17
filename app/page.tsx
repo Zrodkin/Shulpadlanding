@@ -49,7 +49,7 @@ export default function LandingPage() {
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
                 <div className="relative bg-gradient-to-br from-teal-500 to-blue-500 rounded-xl p-2 shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-105">
-                  <Image src="/images/logo.png" alt="ShulPad Logo" width={28} height={28} className="rounded-lg" />
+                  <Image src="/images/dp-logo.png" alt="ShulPad Logo" width={28} height={28} className="rounded-lg" />
                 </div>
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-teal-400 to-blue-400 rounded-full animate-pulse"></div>
               </div>
@@ -983,7 +983,7 @@ export default function LandingPage() {
           <div className="grid gap-8 md:grid-cols-4">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <Image src="/images/logo.png" alt="ShulPad Logo" width={30} height={30} className="rounded-md" />
+                <Image src="/images/dp-logo.png" alt="ShulPad Logo" width={30} height={30} className="rounded-md" />
                 <span className="text-lg font-bold">ShulPad</span>
               </div>
               <p className="text-gray-400 text-sm">

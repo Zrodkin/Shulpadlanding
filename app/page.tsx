@@ -67,7 +67,7 @@ export default function LandingPage() {
 </span>
       <span 
   className="text-base font-medium -mt-1 hidden sm:block transition-colors duration-300 drop-shadow-sm"
-  style={{ color: '#DF6087' }}
+  style={{ color: '#A5619C' }}
 >
   Donation Platform
 </span>
@@ -105,8 +105,8 @@ export default function LandingPage() {
         </Link>
         <Button 
   className="text-white px-6 py-2.5 rounded-xl shadow-2xl transition-all duration-300 transform hover:scale-105 group border border-white/20"
-  style={{
-  background: 'linear-gradient(90deg, #2053BB 0%, #2053BB 20%, #6C58A8 70%, #DF6087 100%)'
+ style={{
+  background: 'linear-gradient(90deg, #426BC8 0%, #426BC8 15%, #4D54AC 60%, #E67097 100%)'
 }}
 >
           <span className="font-medium">Get Started</span>

@@ -58,15 +58,13 @@ export default function LandingPage() {
             height={60} 
             className="rounded-xl transition-all duration-300 transform group-hover:scale-110 drop-shadow-2xl group-hover:drop-shadow-[0_0_20px_rgba(20,184,166,0.5)]" 
           />
-          {/* Animated status indicator */}
-          <div className="absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-r from-teal-400 to-blue-400 rounded-full animate-pulse shadow-lg"></div>
         </div>
         
         <div className="flex flex-col">
           {/* Enhanced text visibility - larger and more prominent */}
-          <span className="text-3xl font-bold text-white group-hover:text-teal-300 transition-colors duration-300 drop-shadow-lg">
-            ShulPad
-          </span>
+         <span className="text-lg font-bold text-white group-hover:text-teal-300 transition-colors duration-300 drop-shadow-lg">
+  ShulPad
+</span>
           <span className="text-base text-teal-200/90 font-medium -mt-1 hidden sm:block group-hover:text-teal-100 transition-colors duration-300 drop-shadow-sm">
             Donation Platform
           </span>

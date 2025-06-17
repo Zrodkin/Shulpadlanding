@@ -54,8 +54,8 @@ export default function LandingPage() {
           <Image 
             src="/images/dp-logo.png" 
             alt="ShulPad Logo" 
-            width={60} 
-            height={60} 
+            width={50} 
+            height={50} 
             className="rounded-xl transition-all duration-300 transform group-hover:scale-110 drop-shadow-2xl group-hover:drop-shadow-[0_0_20px_rgba(20,184,166,0.5)]" 
           />
         </div>
@@ -65,9 +65,16 @@ export default function LandingPage() {
          <span className="text-lg font-bold text-white group-hover:text-teal-300 transition-colors duration-300 drop-shadow-lg">
   ShulPad
 </span>
-          <span className="text-base text-teal-200/90 font-medium -mt-1 hidden sm:block group-hover:text-teal-100 transition-colors duration-300 drop-shadow-sm">
-            Donation Platform
-          </span>
+       <span 
+  className="text-base font-medium -mt-1 hidden sm:block transition-all duration-300 drop-shadow-sm bg-clip-text text-transparent"
+  style={{
+    background: 'linear-gradient(90deg, rgba(32, 83, 187, 1) 0%, rgba(108, 88, 168, 1) 50%, rgba(223, 96, 135, 1) 100%)',
+    WebkitBackgroundClip: 'text',
+    backgroundClip: 'text'
+  }}
+>
+  Donation Platform
+</span>
         </div>
       </Link>
 
@@ -100,7 +107,12 @@ export default function LandingPage() {
         >
           Contact
         </Link>
-        <Button className="bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white px-6 py-2.5 rounded-xl shadow-2xl hover:shadow-teal-500/25 transition-all duration-300 transform hover:scale-105 group border border-white/20">
+        <Button 
+  className="text-white px-6 py-2.5 rounded-xl shadow-2xl transition-all duration-300 transform hover:scale-105 group border border-white/20"
+  style={{
+    background: 'linear-gradient(90deg, rgba(32, 83, 187, 1) 0%, rgba(108, 88, 168, 1) 50%, rgba(223, 96, 135, 1) 100%)'
+  }}
+>
           <span className="font-medium">Get Started</span>
           <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
         </Button>

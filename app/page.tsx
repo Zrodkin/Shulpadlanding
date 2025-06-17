@@ -48,9 +48,9 @@ export default function LandingPage() {
             {/* Logo Section */}
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
-                <div className="relative bg-gradient-to-br from-teal-500 to-blue-500 rounded-xl p-2 shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-105">
-                  <Image src="/images/dp-logo.png" alt="ShulPad Logo" width={28} height={28} className="rounded-lg" />
-                </div>
+                <div className="relative rounded-xl p-2 shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-105">
+  <Image src="/images/dp-logo.png" alt="ShulPad Logo" width={28} height={28} className="rounded-lg" />
+</div>
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-teal-400 to-blue-400 rounded-full animate-pulse"></div>
               </div>
               <div className="flex flex-col">

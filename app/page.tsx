@@ -16,17 +16,101 @@ import {
   Users,
   TrendingUp,
   Shield,
+  X,
+  Send,
+  Building,
+  User,
+  MessageSquare,
 } from "lucide-react"
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrollY, setScrollY] = useState(0)
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY)
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  useEffect(() => {
+    if (isContactModalOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isContactModalOpen])
+
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    organizationName: '',
+    organizationType: '',
+    organizationSize: '',
+    message: ''
+  })
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    
+    try {
+      // Netlify Forms submission
+      const netlifyFormData = new FormData()
+      netlifyFormData.append('form-name', 'contact')
+      netlifyFormData.append('name', formData.name)
+      netlifyFormData.append('email', formData.email)
+      netlifyFormData.append('organizationName', formData.organizationName)
+      netlifyFormData.append('organizationType', formData.organizationType)
+      netlifyFormData.append('organizationSize', formData.organizationSize)
+      netlifyFormData.append('message', formData.message)
+
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(netlifyFormData as any).toString()
+      })
+
+      if (response.ok) {
+        setSubmitStatus('success')
+        
+        // Reset form after success
+        setTimeout(() => {
+          setFormData({
+            name: '',
+            email: '',
+            organizationName: '',
+            organizationType: '',
+            organizationSize: '',
+            message: ''
+          })
+          setSubmitStatus('idle')
+          setIsContactModalOpen(false)
+        }, 3000)
+      } else {
+        throw new Error('Network response was not ok')
+      }
+      
+    } catch (error) {
+      setSubmitStatus('error')
+      setTimeout(() => setSubmitStatus('idle'), 3000)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   const stats = [
     { number: "500+", label: "Organizations" },
@@ -65,12 +149,9 @@ export default function LandingPage() {
          <span className="text-lg font-bold text-white group-hover:text-teal-300 transition-colors duration-300 drop-shadow-lg">
   ShulPad
 </span>
-      <span 
-  className="text-base font-medium -mt-1 hidden sm:block transition-colors duration-300 drop-shadow-sm"
-  style={{ color: '#A5619C' }}
->
-  Donation Platform
-</span>
+          <span className="text-base text-teal-200/90 font-medium -mt-1 hidden sm:block group-hover:text-teal-100 transition-colors duration-300 drop-shadow-sm">
+            Donation Platform
+          </span>
         </div>
       </Link>
 
@@ -97,20 +178,16 @@ export default function LandingPage() {
 
       {/* Enhanced Action Buttons */}
       <div className="hidden md:flex items-center gap-4">
-        <Link
-          href="#contact"
+        <button
+          onClick={() => setIsContactModalOpen(true)}
           className="px-5 py-2.5 text-sm font-medium text-white/90 hover:text-white rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all duration-300 border border-white/20 hover:border-white/40"
         >
           Contact
-        </Link>
+        </button>
         <Button 
-  className="text-white px-6 py-2.5 rounded-xl shadow-2xl transition-all duration-300 transform hover:scale-105 group border border-white/20"
-style={{
-  background: 'linear-gradient(90deg, #426BC8 0%, #426BC8 25%, #4D54AC 65%, #E67097 100%)',
-  backgroundSize: '100% 100%',
-  backgroundRepeat: 'no-repeat'
-}}
->
+          className="bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white px-6 py-2.5 rounded-xl shadow-2xl hover:shadow-teal-500/25 transition-all duration-300 transform hover:scale-105 group border border-white/20"
+          onClick={() => setIsContactModalOpen(true)}
+        >
           <span className="font-medium">Get Started</span>
           <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
         </Button>
@@ -197,16 +274,21 @@ style={{
           
           {/* Action buttons */}
           <div className="border-t border-white/10 pt-6 space-y-4">
-            <Link
-              href="#contact"
+            <button
+              onClick={() => {
+                setIsMenuOpen(false)
+                setIsContactModalOpen(true)
+              }}
               className="block w-full p-4 text-center text-white/90 hover:text-white hover:bg-white/10 rounded-2xl transition-all duration-300 border border-white/20 hover:border-white/40 backdrop-blur-sm font-medium"
-              onClick={() => setIsMenuOpen(false)}
             >
               Contact Us
-            </Link>
+            </button>
             <Button 
               className="w-full bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white rounded-2xl py-4 font-medium shadow-2xl hover:shadow-teal-500/25 transition-all duration-300 transform hover:scale-105 border border-white/20"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={() => {
+                setIsMenuOpen(false)
+                setIsContactModalOpen(true)
+              }}
             >
               <span>Get Started</span>
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -289,6 +371,7 @@ style={{
                   <Button
                     size="lg"
                     className="relative bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white shadow-2xl hover:shadow-teal-500/25 transition-all duration-300 transform hover:scale-105 group overflow-hidden"
+                    onClick={() => setIsContactModalOpen(true)}
                   >
                     {/* Button Glow Effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -299,6 +382,7 @@ style={{
                     size="lg"
                     variant="outline"
                     className="border-2 border-white/50 text-white bg-white/10 hover:bg-white/20 hover:border-white/70 backdrop-blur-md transition-all duration-300 transform hover:scale-105 group shadow-lg"
+                    onClick={() => setIsContactModalOpen(true)}
                   >
                     <span>Watch Demo</span>
                     <div className="ml-2 w-2 h-2 bg-white rounded-full animate-pulse group-hover:animate-ping"></div>
@@ -972,6 +1056,7 @@ style={{
                               ? "bg-white text-teal-600 hover:bg-gray-100 shadow-lg hover:shadow-xl"
                               : "bg-gradient-to-r from-teal-600 to-teal-500 text-white hover:from-teal-700 hover:to-teal-600 shadow-lg hover:shadow-xl"
                           }`}
+                          onClick={() => setIsContactModalOpen(true)}
                         >
                           <span>Get Started</span>
                           <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
@@ -986,12 +1071,12 @@ style={{
             <div className="text-center mt-12">
               <p className="text-gray-600">
                 Need more devices or custom features?{" "}
-                <Link
-                  href="#contact"
+                <button
+                  onClick={() => setIsContactModalOpen(true)}
                   className="text-teal-600 hover:text-teal-700 font-medium underline underline-offset-4 hover:underline-offset-2 transition-all duration-200"
                 >
                   Contact us
-                </Link>{" "}
+                </button>{" "}
                 for enterprise pricing.
               </p>
             </div>
@@ -1017,6 +1102,7 @@ style={{
                 <Button
                   size="lg"
                   className="bg-white text-teal-600 hover:bg-gray-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 group"
+                  onClick={() => setIsContactModalOpen(true)}
                 >
                   Download on App Store
                   <ExternalLink className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -1025,6 +1111,7 @@ style={{
                   size="lg"
                   variant="outline"
                   className="border-2 border-white/50 text-white bg-white/10 hover:bg-white/20 hover:border-white/70 backdrop-blur-md transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  onClick={() => setIsContactModalOpen(true)}
                 >
                   Request Demo
                 </Button>
@@ -1126,6 +1213,227 @@ style={{
           </div>
         </div>
       </footer>
+
+      {/* Contact Modal */}
+      {isContactModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300"
+            onClick={() => setIsContactModalOpen(false)}
+          ></div>
+
+          {/* Modal Content */}
+          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            {/* Background Effects */}
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-900/95 via-gray-900/95 to-slate-900/95 backdrop-blur-xl rounded-3xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-teal-400/10 via-blue-400/5 to-purple-400/10 rounded-3xl"></div>
+            
+            {/* Grid Pattern */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] rounded-3xl"></div>
+            
+            {/* Content */}
+            <div className="relative p-8">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-3xl font-bold text-white mb-2">
+                    Let's Get You Started
+                  </h2>
+                  <p className="text-white/70">
+                    Tell us about your organization and we'll help you transform your donation experience.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setIsContactModalOpen(false)}
+                  className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 group"
+                >
+                  <X className="w-6 h-6 group-hover:rotate-90 transition-transform duration-200" />
+                </button>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="space-y-6" name="contact" method="POST" data-netlify="true">
+                {/* Hidden field for Netlify */}
+                <input type="hidden" name="form-name" value="contact" />
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Name */}
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2 text-sm font-medium text-white/90">
+                      <User className="w-4 h-4 text-teal-400" />
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal-400/50 focus:border-teal-400/50 backdrop-blur-sm transition-all duration-200"
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+
+                  {/* Email */}
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2 text-sm font-medium text-white/90">
+                      <Mail className="w-4 h-4 text-blue-400" />
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 backdrop-blur-sm transition-all duration-200"
+                      placeholder="your@email.com"
+                    />
+                  </div>
+
+                  {/* Organization Name */}
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2 text-sm font-medium text-white/90">
+                      <Building className="w-4 h-4 text-purple-400" />
+                      Organization Name
+                    </label>
+                    <input
+                      type="text"
+                      name="organizationName"
+                      value={formData.organizationName}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-400/50 focus:border-purple-400/50 backdrop-blur-sm transition-all duration-200"
+                      placeholder="Your organization name"
+                    />
+                  </div>
+
+                  {/* Organization Type */}
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2 text-sm font-medium text-white/90">
+                      <Settings className="w-4 h-4 text-green-400" />
+                      Organization Type
+                    </label>
+                    <select
+                      name="organizationType"
+                      value={formData.organizationType}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-green-400/50 backdrop-blur-sm transition-all duration-200"
+                    >
+                      <option value="" className="bg-gray-900 text-white">Select type...</option>
+                      <option value="synagogue" className="bg-gray-900 text-white">Synagogue</option>
+                      <option value="church" className="bg-gray-900 text-white">Church</option>
+                      <option value="mosque" className="bg-gray-900 text-white">Mosque</option>
+                      <option value="nonprofit" className="bg-gray-900 text-white">Nonprofit</option>
+                      <option value="charity" className="bg-gray-900 text-white">Charity</option>
+                      <option value="school" className="bg-gray-900 text-white">School</option>
+                      <option value="other" className="bg-gray-900 text-white">Other</option>
+                    </select>
+                  </div>
+
+                  {/* Organization Size */}
+                  <div className="space-y-2 md:col-span-2">
+                    <label className="flex items-center gap-2 text-sm font-medium text-white/90">
+                      <Users className="w-4 h-4 text-orange-400" />
+                      Organization Size
+                    </label>
+                    <select
+                      name="organizationSize"
+                      value={formData.organizationSize}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-400/50 focus:border-orange-400/50 backdrop-blur-sm transition-all duration-200"
+                    >
+                      <option value="" className="bg-gray-900 text-white">Select size...</option>
+                      <option value="small" className="bg-gray-900 text-white">Small (1-50 members)</option>
+                      <option value="medium" className="bg-gray-900 text-white">Medium (51-200 members)</option>
+                      <option value="large" className="bg-gray-900 text-white">Large (201-500 members)</option>
+                      <option value="xlarge" className="bg-gray-900 text-white">Very Large (500+ members)</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Message */}
+                <div className="space-y-2">
+                  <label className="flex items-center gap-2 text-sm font-medium text-white/90">
+                    <MessageSquare className="w-4 h-4 text-pink-400" />
+                    Message
+                  </label>
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    rows={4}
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-pink-400/50 backdrop-blur-sm transition-all duration-200 resize-none"
+                    placeholder="Tell us about your needs, timeline, or any questions you have..."
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <div className="flex gap-4 pt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsContactModalOpen(false)}
+                    className="flex-1 border-white/20 text-white/80 hover:text-white hover:bg-white/10 hover:border-white/40 backdrop-blur-sm transition-all duration-200"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex-1 bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 text-white shadow-xl hover:shadow-teal-500/25 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none group"
+                  >
+                    {isSubmitting ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        <span>Sending...</span>
+                      </div>
+                    ) : submitStatus === 'success' ? (
+                      <div className="flex items-center gap-2">
+                        <Check className="w-4 h-4" />
+                        <span>Sent Successfully!</span>
+                      </div>
+                    ) : submitStatus === 'error' ? (
+                      <div className="flex items-center gap-2">
+                        <X className="w-4 h-4" />
+                        <span>Error - Try Again</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Send className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                        <span>Send Message</span>
+                      </div>
+                    )}
+                  </Button>
+                </div>
+              </form>
+
+              {/* Success Message */}
+              {submitStatus === 'success' && (
+                <div className="mt-6 p-4 bg-green-500/20 border border-green-400/30 rounded-xl">
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center">
+                      <Check className="w-3 h-3 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-green-300 font-medium">Message sent successfully!</p>
+                      <p className="text-green-200/80 text-sm">We'll get back to you within 24 hours.</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Floating Particles */}
+              <div className="absolute top-8 right-8 w-2 h-2 bg-teal-400/60 rounded-full animate-ping"></div>
+              <div className="absolute bottom-8 left-8 w-3 h-3 bg-blue-400/40 rounded-full animate-float"></div>
+              <div className="absolute top-1/2 right-4 w-1 h-1 bg-purple-400/60 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

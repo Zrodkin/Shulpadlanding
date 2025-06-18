@@ -1,4 +1,5 @@
-import { Metadata } from "next"
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 import { useState, useEffect } from "react"
@@ -15,34 +16,6 @@ import {
   ChevronRight,
   ExternalLink,
 } from "lucide-react"
-
-export const metadata: Metadata = {
-  title: "Privacy Policy - ShulPad",
-  description: "ShulPad's privacy policy. Learn how we collect, use, and protect your personal information when using our donation kiosk app.",
-  keywords: "privacy policy, data protection, GDPR, CCPA, donation app privacy",
-  robots: {
-    index: true,
-    follow: true,
-  },
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://shulpad.com/privacy',
-    siteName: 'ShulPad',
-    title: 'Privacy Policy - ShulPad',
-    description: 'ShulPad\'s privacy policy. Learn how we collect, use, and protect your personal information.',
-  },
-  twitter: {
-    card: 'summary',
-    title: 'Privacy Policy - ShulPad',
-    description: 'ShulPad\'s privacy policy. Learn how we collect, use, and protect your personal information.',
-  },
-  alternates: {
-    canonical: '/privacy',
-  },
-}
-
-"use client"
 
 export default function PrivacyPage() {
   const [activeSection, setActiveSection] = useState("")

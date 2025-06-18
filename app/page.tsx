@@ -1242,9 +1242,9 @@ export default function LandingPage() {
             <div className="space-y-4">
               <h4 className="font-semibold">Legal</h4>
               <div className="space-y-2 text-sm text-gray-400">
-                <Link href="#" className="block hover:text-white transition-colors">
-                  Privacy
-                </Link>
+               <Link href="/privacy" className="block hover:text-white transition-colors">
+  Privacy
+</Link>
                 <Link href="#" className="block hover:text-white transition-colors">
                   Terms
                 </Link>
